@@ -12,7 +12,7 @@ def dump_report(data, path='report', kind='csv'):
         'last_name',
         'country',
         'city',
-        'bdate',  # todo: iso
+        'bdate',
         'sex',
     ]
 
@@ -27,11 +27,23 @@ def dump_report(data, path='report', kind='csv'):
     ]
 
     for entry in data:
+        # replace with human-readable country/city
         try:
             entry['country'] = entry['country']['title']
             entry['city'] = entry['city']['title']
         except KeyError:
             pass
+
+        # drop dates that aren't full, then transform to iso
+        try:
+            date_tuple = entry['bdate'].split('.')
+        except KeyError:
+            continue
+
+        if len(date_tuple) == 3:
+            entry['bdate'] = '.'.join(reversed(date_tuple))
+        else:
+            del entry['bdate']
 
     if kind == 'csv':
         with open(f'{path}.csv', 'w') as file:
