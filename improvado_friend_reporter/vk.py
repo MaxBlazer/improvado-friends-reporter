@@ -12,8 +12,10 @@ class VK:
     def get_friends(self, user_id=0):
         return self._api_call('friends.get', user_id=user_id)
 
-    def get_users(self, user_ids: list[int]):
-        return self._api_call('users.get', user_ids=','.join(str(id) for id in user_ids))
+    def get_users(self, user_ids: list[int], fields: list[str] = None):
+        if fields is None:
+            fields = []
+        return self._api_call('users.get', user_ids=','.join(str(id) for id in user_ids), fields=','.join(fields))
 
     def _api_call(self, method: str, **params) -> dict:
         params = '&'.join(f'{k}={v}' for k, v in params.items())
