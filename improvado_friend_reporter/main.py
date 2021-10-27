@@ -31,6 +31,7 @@ def main():
         print(response['error']['error_msg'])
         return
 
+    # NOTE: no more than 5000 friends
     response = api.get_users(friend_ids, fields=['city', 'country', 'bdate', 'sex'])
     try:
         friends = response['response']
