@@ -75,4 +75,4 @@ def _dump_tsv(data, path, fields):
 
 def _dump_json(data, path):
     with open(f'{path}.json', 'w') as file:
-        json.dump(data, file)
+        json.dump(data, file, ensure_ascii=False)

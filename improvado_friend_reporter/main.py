@@ -24,8 +24,19 @@ def main():
 
     api = VK(api_version, access_token)
 
-    friend_ids = api.get_friends(user_id)['response']['items']
-    friends = api.get_users(friend_ids, fields=['city', 'country', 'bdate', 'sex'])['response']
+    response = api.get_friends(user_id)
+    try:
+        friend_ids = response['response']['items']
+    except KeyError:
+        print(response['error']['error_msg'])
+        return
+
+    response = api.get_users(friend_ids, fields=['city', 'country', 'bdate', 'sex'])
+    try:
+        friends = response['response']
+    except KeyError:
+        print(response['error']['error_msg'])
+        return
 
     reporter.dump(friends, save_path, file_format)
 
